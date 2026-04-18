@@ -1,0 +1,8 @@
+local package = {
+	version="1.0.0",
+	description="UDP carried via rednet",
+	provides={"/lib/rednetUDP.lua"},
+	depends={"ccinit"},
+	optDepends={},
+}
+return package
