@@ -9,9 +9,10 @@ Other than that, rednet already had every feature of UDP. But this one addition 
 ]]
 
 
+local rednetUDP = {}
 
 
-function send(recipient, message, port, replyPort)
+function rednetUDP.send(recipient, message, port, replyPort)
     assert(port, "port is nil")
     assert(replyPort, "replyPort is nil")
     if type(recipient) == "number" then
@@ -22,11 +23,11 @@ function send(recipient, message, port, replyPort)
     error("recipient is not a number or nil")
 end
 
-function broadcast(message, port, replyPort)
-    return send(nil, message, port, replyPort)
+function rednetUDP.broadcast(message, port, replyPort)
+    return rednetUDP.send(nil, message, port, replyPort)
 end
 
-function receive(portFilter, replyPortFilter, senderFilter, timeout)
+function rednetUDP.receive(portFilter, replyPortFilter, senderFilter, timeout)
     local timer
     if type(timeout) == number and timeout > 0 then
         timer=os.startTimer(timeout)
@@ -42,6 +43,8 @@ function receive(portFilter, replyPortFilter, senderFilter, timeout)
                 and (not senderFilter or senderID == senderFilter)
                 and (not portFilter or rawMessage[2] == portFilter)
                 and (not replyPortFilter or rawMessage[3] == replyPortFilter)
+                and type(rawMessage) == "table"
+                and (rawMessage[1] and rawMessage[2] and rawMessage[3])
             then
                 return senderID, rawMessage[1], rawMessage[2], rawMessage[3]
             end
@@ -50,3 +53,5 @@ function receive(portFilter, replyPortFilter, senderFilter, timeout)
     return nil
 end
 
+
+return rednetUDP

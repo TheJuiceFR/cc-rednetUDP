@@ -1,10 +1,15 @@
-function processEvent(event, senderID, rawMessage, messageProtocol)
-    if event == "rednet_message" and messageProtocol == "rednetUDP" then
-	if type(rawMessage) ~= "table" then return true end
-        return "rednetUDP_message", senderID, rawMessage[1], rawMessage[2], rawMessage[3]
-    else
-	return false
-    end
+local eventHandle = {}
+
+function eventHandle.rednet_message(event, senderID, rawMessage, messageProtocol)
+	if messageProtocol == "rednetUDP" then
+		-- If it's not proper, drop the packet
+		if type(rawMessage) ~= "table" or not (rawMessage[1] and rawMessage[2] and rawMessage[3]) then return true end
+		
+		return "rednetUDP_message", senderID, rawMessage[1], rawMessage[2], rawMessage[3]
+	else
+		return false
+	end
 end
 
-return processEvent
+return eventHandle
+
