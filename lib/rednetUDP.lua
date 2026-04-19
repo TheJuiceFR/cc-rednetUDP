@@ -33,7 +33,7 @@ function rednetUDP.receive(portFilter, replyPortFilter, senderFilter, timeout)
         timer=os.startTimer(timeout)
     end
     while true do
-        event, s1, s2, s3 = init.pullEvent()
+        event, s1, s2, s3 = os.pullEvent()
         if timer and event == "timer" then
             if s1 == timer then return false end
         elseif event == "rednet_message" then
