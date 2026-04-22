@@ -1,6 +1,6 @@
-local eventHandle = {}
+local eventHandler = {}
 
-function eventHandle.rednet_message(event, senderID, rawMessage, messageProtocol)
+function eventHandler.rednet_message(event, senderID, rawMessage, messageProtocol)
 	if messageProtocol == "rednetUDP" then
 		-- If it's not proper, drop the packet
 		if type(rawMessage) ~= "table" or not (rawMessage[1] and rawMessage[2] and rawMessage[3]) then return true end
@@ -11,5 +11,5 @@ function eventHandle.rednet_message(event, senderID, rawMessage, messageProtocol
 	end
 end
 
-return eventHandle
+return eventHandler
 
